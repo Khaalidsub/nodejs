@@ -27,44 +27,49 @@ app.post('/user', (req, res) =>{
    const user =  req.body.email
 
 
-    users.push(user)
+    users.push({id:users.length+1, email:user})
 
-    res.json({email:user})
+    res.json(users[users.length-1])
 })
 
 // create an enpoint that returns all created users
 app.get('/users', (req, res)=>{
-    /* [
-        {
-            "email": ""
-        }
-        {
-            "email": ""
-        }
-        {
-            "email": ""
-        }
+ 
 
-    ]
-   
+//    let userEmails = []
+//    for (let i = 0; i < users.length; i++) {
+//     //    let modifiedUser = {email:users[i]}// email :""
+//     let modifiedUser = {}
+//     modifiedUser.email = users[i]
 
-//     */
+//        userEmails.push(modifiedUser)
+//    }
 
-   let userEmails = []
-   for (let i = 0; i < users.length; i++) {
-    //    let modifiedUser = {email:users[i]}// email :""
-    let modifiedUser = {}
-    modifiedUser.email = users[i]
-
-       userEmails.push(modifiedUser)
-   }
-
-    res.json(userEmails)
+    res.json(users)
 })
 
 // create an endpoints that returns only one user
+app.get('/user/:id', (req, res)=>{
+    const id = req.params?.id /// if this variable does not exist define as null/undefined
+    console.log(id);
+    if (!id) {
+        res.status(404).send('Specify an id to get a user')
+    }
+
+    const user = users.find((user)=>user.id == id)
+    if (!user) { // if the user is null of empty
+        res.status(404).send('The id specified does not exist')
+    }
+
+    res.json(user)
+})
 
 
+// const userId = '1'
+// const post.user  = 1
+
+// post.user == userId // true
+// post.user === userId // false
 
 
 
